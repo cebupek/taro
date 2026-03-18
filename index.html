@@ -30,7 +30,6 @@
     position: relative;
   }
 
-  /* Фон со звёздами */
   .stars-bg {
     position: fixed;
     inset: 0;
@@ -42,13 +41,13 @@
     z-index: 0;
   }
 
-  /* Анимированные звёздочки */
   .star {
     position: fixed;
     background: #fff;
     border-radius: 50%;
     animation: twinkle var(--dur) ease-in-out infinite;
     opacity: 0;
+    pointer-events: none;
   }
 
   @keyframes twinkle {
@@ -59,15 +58,14 @@
   .container {
     position: relative;
     z-index: 1;
-    padding: 20px 16px 100px;
+    padding: 20px 16px 120px;
     max-width: 480px;
     margin: 0 auto;
   }
 
-  /* Заголовок */
   .header {
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
   }
 
   .moon-icon {
@@ -84,8 +82,8 @@
 
   .title {
     font-family: 'Cinzel', serif;
-    font-size: 22px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 700;
     color: var(--gold);
     letter-spacing: 2px;
     text-shadow: 0 0 20px rgba(201, 168, 76, 0.4);
@@ -93,9 +91,10 @@
   }
 
   .subtitle {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-dim);
     font-style: italic;
+    margin-bottom: 12px;
   }
 
   .count-indicator {
@@ -106,7 +105,6 @@
     border: 1px solid var(--card-border);
     border-radius: 20px;
     padding: 6px 16px;
-    margin-top: 12px;
     font-size: 13px;
     color: var(--gold-light);
   }
@@ -117,6 +115,7 @@
     border-radius: 50%;
     background: var(--card-border);
     transition: all 0.3s;
+    flex-shrink: 0;
   }
 
   .count-dot.filled {
@@ -128,27 +127,28 @@
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 10px;
     margin-bottom: 24px;
   }
 
   .card-slot {
-    aspect-ratio: 2/3.5;
+    aspect-ratio: 2/3.2;
     cursor: pointer;
     position: relative;
-    perspective: 800px;
+    perspective: 900px;
     user-select: none;
+    -webkit-user-select: none;
   }
 
   .card-inner {
     position: absolute;
     inset: 0;
     transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 10px;
+    will-change: transform;
   }
 
-  /* Флип карты - всегда одинаковый, reversed влияет только на бейдж */
   .card-slot.flipped .card-inner {
     transform: rotateY(180deg);
   }
@@ -162,9 +162,9 @@
     overflow: hidden;
   }
 
-  /* Рубашка карты */
+  /* Рубашка */
   .card-back {
-    background: var(--card-bg);
+    background: linear-gradient(160deg, #1a1035 0%, #0d0a1a 100%);
     border: 1.5px solid var(--card-border);
     display: flex;
     align-items: center;
@@ -172,9 +172,9 @@
     transition: border-color 0.3s, box-shadow 0.3s;
   }
 
-  .card-slot:hover .card-back {
+  .card-slot:active .card-back {
     border-color: var(--gold);
-    box-shadow: 0 0 20px rgba(201, 168, 76, 0.2);
+    box-shadow: 0 0 20px rgba(201, 168, 76, 0.25);
   }
 
   .card-slot.selected .card-back {
@@ -182,85 +182,111 @@
     box-shadow: 0 0 25px var(--selected-glow);
   }
 
-  /* Орнамент на рубашке */
   .card-ornament {
-    width: 75%;
-    height: 85%;
+    width: 72%;
+    height: 82%;
     border: 1px solid rgba(201, 168, 76, 0.3);
     border-radius: 6px;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 6px;
   }
 
   .card-ornament::before {
     content: '';
     position: absolute;
     inset: 4px;
-    border: 1px solid rgba(201, 168, 76, 0.2);
+    border: 1px solid rgba(201, 168, 76, 0.15);
     border-radius: 4px;
   }
 
   .card-symbol {
-    font-size: 22px;
-    opacity: 0.6;
+    font-size: 20px;
+    opacity: 0.5;
   }
 
-  /* Лицевая сторона карты */
+  .card-num {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    color: rgba(201, 168, 76, 0.4);
+    letter-spacing: 1px;
+  }
+
+  /* Лицевая сторона */
   .card-front {
     transform: rotateY(180deg);
-    background: linear-gradient(160deg, #1e1535 0%, #0f0c1e 100%);
     border: 1.5px solid var(--gold);
+    box-shadow: 0 0 15px rgba(201, 168, 76, 0.2);
+    background: #0d0a1a;
+  }
+
+  /* Картинка карты */
+  .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+  }
+
+  /* Fallback если нет картинки */
+  .card-front-text {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 8px 5px;
-    text-align: center;
-    box-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
-    overflow: hidden;
+    background: linear-gradient(160deg, #1e1535 0%, #0f0c1e 100%);
   }
 
   .card-name {
     font-family: 'Cinzel', serif;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
-    color: #ffffff;
-    letter-spacing: 0.4px;
+    color: #fff;
+    letter-spacing: 0.3px;
     line-height: 1.4;
     text-align: center;
-    padding: 0 6px;
-    text-shadow: 0 1px 6px rgba(0,0,0,0.95), 0 0 10px rgba(201,168,76,0.5);
-    word-break: break-word;
+    padding: 0 4px;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.9);
   }
 
   .card-desc {
-    font-family: 'Lora', serif;
     font-size: 8px;
     font-style: italic;
-    color: #c9a84c;
+    color: var(--gold);
     text-align: center;
     padding: 0 4px;
-    margin-top: 5px;
+    margin-top: 4px;
     line-height: 1.4;
-    opacity: 0.9;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    opacity: 0.85;
   }
 
-  .card-reversed-badge {
+  /* Оверлей с именем карты поверх картинки */
+  .card-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+    padding: 14px 5px 5px;
+    border-radius: 0 0 8px 8px;
+    text-align: center;
+  }
+
+  .card-label-name {
+    font-family: 'Cinzel', serif;
     font-size: 9px;
-    color: #e8c96d;
-    margin-top: 5px;
-    font-style: normal;
-    opacity: 0.9;
-    letter-spacing: 0.2px;
-  }
-
-  .card-emoji {
-    font-size: 28px;
-    margin-bottom: 2px;
-    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.7));
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.3px;
+    line-height: 1.3;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.9);
   }
 
   /* Кнопка подтверждения */
@@ -270,8 +296,8 @@
     left: 0;
     right: 0;
     z-index: 10;
-    padding: 16px;
-    background: linear-gradient(to top, var(--deep) 60%, transparent);
+    padding: 12px 16px 20px;
+    background: linear-gradient(to top, var(--deep) 65%, transparent);
   }
 
   .confirm-inner {
@@ -279,13 +305,42 @@
     margin: 0 auto;
   }
 
+  .selected-preview {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    min-height: 28px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .selected-tag {
+    background: rgba(107, 63, 160, 0.35);
+    border: 1px solid var(--selected);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 130px;
+    animation: tagIn 0.25s ease;
+  }
+
+  @keyframes tagIn {
+    from { opacity: 0; transform: scale(0.8) translateY(4px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
   button {
     width: 100%;
-    padding: 16px;
+    padding: 15px;
     border: none;
     border-radius: 12px;
     font-family: 'Cinzel', serif;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     letter-spacing: 1px;
     cursor: pointer;
@@ -295,75 +350,43 @@
   }
 
   button.active {
-    background: linear-gradient(135deg, #6b3fa0 0%, #9b5de5 50%, #6b3fa0 100%);
+    background: linear-gradient(135deg, #5a2d91 0%, #9b5de5 50%, #5a2d91 100%);
     color: #fff;
     box-shadow: 0 4px 30px rgba(107, 63, 160, 0.6);
     animation: pulse-btn 2s ease-in-out infinite;
   }
 
   button.inactive {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.06);
     color: var(--text-dim);
-    box-shadow: none;
     cursor: not-allowed;
   }
 
   @keyframes pulse-btn {
     0%, 100% { box-shadow: 0 4px 30px rgba(107, 63, 160, 0.6); }
-    50% { box-shadow: 0 4px 45px rgba(107, 63, 160, 0.9), 0 0 80px rgba(155, 93, 229, 0.3); }
+    50% { box-shadow: 0 4px 50px rgba(107, 63, 160, 0.95), 0 0 80px rgba(155, 93, 229, 0.3); }
   }
 
   button.active::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.08), transparent);
-    transform: rotate(45deg);
-    animation: shimmer 3s ease-in-out infinite;
+    top: -50%; left: -60%;
+    width: 50%; height: 200%;
+    background: rgba(255,255,255,0.12);
+    transform: skewX(-20deg);
+    animation: shimmer 2.5s ease-in-out infinite;
   }
 
   @keyframes shimmer {
-    0% { transform: translateX(-100%) rotate(45deg); }
-    100% { transform: translateX(100%) rotate(45deg); }
-  }
-
-  /* Выбранные карты внизу */
-  .selected-preview {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    min-height: 32px;
-    align-items: center;
-  }
-
-  .selected-tag {
-    background: rgba(107, 63, 160, 0.3);
-    border: 1px solid var(--selected);
-    border-radius: 20px;
-    padding: 4px 10px;
-    font-size: 11px;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 120px;
-    animation: tagIn 0.3s ease;
-  }
-
-  @keyframes tagIn {
-    from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
+    0% { left: -60%; }
+    100% { left: 160%; }
   }
 
   /* Лоадер */
   .loading-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(13, 10, 26, 0.9);
+    background: rgba(13, 10, 26, 0.92);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -371,7 +394,7 @@
     z-index: 100;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.4s;
+    transition: opacity 0.35s;
   }
 
   .loading-overlay.show {
@@ -380,25 +403,41 @@
   }
 
   .loader-orb {
-    width: 60px;
-    height: 60px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, #9b5de5, #4a1a8a);
-    box-shadow: 0 0 40px rgba(155, 93, 229, 0.8);
-    animation: orbPulse 1.5s ease-in-out infinite;
-    margin-bottom: 16px;
+    background: radial-gradient(circle at 35% 35%, #b06aff, #3d0d80);
+    box-shadow: 0 0 50px rgba(155, 93, 229, 0.9);
+    animation: orbPulse 1.4s ease-in-out infinite;
+    margin-bottom: 18px;
   }
 
   @keyframes orbPulse {
     0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(155, 93, 229, 0.8); }
-    50% { transform: scale(1.15); box-shadow: 0 0 70px rgba(155, 93, 229, 1); }
+    50% { transform: scale(1.18); box-shadow: 0 0 80px rgba(155, 93, 229, 1), 0 0 120px rgba(107, 63, 160, 0.4); }
   }
 
   .loading-text {
     font-family: 'Cinzel', serif;
     color: var(--gold);
-    font-size: 14px;
+    font-size: 13px;
     letter-spacing: 2px;
+    animation: fadePulse 1.4s ease-in-out infinite;
+  }
+
+  @keyframes fadePulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  /* Анимация появления карт */
+  .card-slot {
+    animation: cardAppear 0.4s ease both;
+  }
+
+  @keyframes cardAppear {
+    from { opacity: 0; transform: translateY(16px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
   }
 </style>
 </head>
@@ -411,22 +450,16 @@
     <span class="moon-icon">🔮</span>
     <div class="title" id="main-title">ВЫБЕРИТЕ КАРТЫ</div>
     <div class="subtitle" id="sub-title">Сосредоточьтесь на вашем вопросе</div>
-    <div class="count-indicator" id="count-indicator">
-      <!-- dots добавляются динамически -->
-    </div>
+    <div class="count-indicator" id="count-indicator"></div>
   </div>
 
-  <div class="cards-grid" id="cards-grid">
-    <!-- Карты рендерятся JS -->
-  </div>
+  <div class="cards-grid" id="cards-grid"></div>
 </div>
 
 <div class="confirm-btn" id="confirm-area">
   <div class="confirm-inner">
     <div class="selected-preview" id="selected-preview"></div>
-    <button class="inactive" id="confirm-btn" onclick="confirmSelection()">
-      ✨ Выберите карты
-    </button>
+    <button class="inactive" id="confirm-btn" onclick="confirmSelection()">Выберите карты</button>
   </div>
 </div>
 
@@ -437,231 +470,219 @@
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
-// ===== Данные =====
 const TAROT_CARDS = [
-  {name:"Шут",          desc:"Новое начало, риск, свобода"},
-  {name:"Маг",          desc:"Сила воли, мастерство, действие"},
-  {name:"Верховная Жрица", desc:"Тайна, интуиция, внутренний голос"},
-  {name:"Императрица",  desc:"Плодородие, забота, изобилие"},
-  {name:"Император",    desc:"Власть, контроль, стабильность"},
-  {name:"Иерофант",     desc:"Традиции, наставник, духовность"},
-  {name:"Влюблённые",   desc:"Выбор, союз, гармония"},
-  {name:"Колесница",    desc:"Победа, воля, движение вперёд"},
-  {name:"Сила",         desc:"Терпение, смелость, внутренняя мощь"},
-  {name:"Отшельник",    desc:"Уединение, мудрость, поиск пути"},
-  {name:"Колесо Фортуны", desc:"Перемены, судьба, цикл жизни"},
-  {name:"Справедливость", desc:"Честность, баланс, карма"},
-  {name:"Повешенный",   desc:"Пауза, жертва, новый взгляд"},
-  {name:"Смерть",       desc:"Конец, трансформация, новый цикл"},
-  {name:"Умеренность",  desc:"Баланс, терпение, гармония"},
-  {name:"Дьявол",       desc:"Зависимость, страх, искушение"},
-  {name:"Башня",        desc:"Крах, внезапный перелом, хаос"},
-  {name:"Звезда",       desc:"Надежда, вдохновение, исцеление"},
-  {name:"Луна",         desc:"Иллюзии, тревога, подсознание"},
-  {name:"Солнце",       desc:"Радость, успех, ясность"},
-  {name:"Суд",          desc:"Пробуждение, призвание, итог"},
-  {name:"Мир",          desc:"Завершение, целостность, триумф"},
-  {name:"Туз Жезлов",   desc:"Вспышка идеи, творческий старт"},
-  {name:"Двойка Жезлов", desc:"Планирование, горизонты, выбор"},
-  {name:"Тройка Жезлов", desc:"Расширение, ожидание, рост"},
-  {name:"Четвёрка Жезлов", desc:"Праздник, стабильность, дом"},
-  {name:"Пятёрка Жезлов", desc:"Конкуренция, спор, соперничество"},
-  {name:"Шестёрка Жезлов", desc:"Победа, признание, успех"},
-  {name:"Семёрка Жезлов", desc:"Защита позиций, упорство"},
-  {name:"Восьмёрка Жезлов", desc:"Скорость, новости, движение"},
-  {name:"Девятка Жезлов", desc:"Стойкость, усталость, осторожность"},
-  {name:"Десятка Жезлов", desc:"Бремя, усилие, ответственность"},
-  {name:"Паж Жезлов",   desc:"Энтузиазм, новость, приключение"},
-  {name:"Рыцарь Жезлов", desc:"Страсть, импульс, риск"},
-  {name:"Королева Жезлов", desc:"Харизма, уверенность, творчество"},
-  {name:"Король Жезлов", desc:"Лидерство, видение, энергия"},
-  {name:"Туз Кубков",   desc:"Любовь, новые чувства, начало"},
-  {name:"Двойка Кубков", desc:"Партнёрство, притяжение, союз"},
-  {name:"Тройка Кубков", desc:"Дружба, веселье, поддержка"},
-  {name:"Четвёрка Кубков", desc:"Скука, упущенное, апатия"},
-  {name:"Пятёрка Кубков", desc:"Потеря, сожаление, горе"},
-  {name:"Шестёрка Кубков", desc:"Ностальгия, детство, доброта"},
-  {name:"Семёрка Кубков", desc:"Мечты, иллюзии, выбор"},
-  {name:"Восьмёрка Кубков", desc:"Уход, разочарование, поиск"},
-  {name:"Девятка Кубков", desc:"Желание исполнено, довольство"},
-  {name:"Десятка Кубков", desc:"Счастье, семья, гармония"},
-  {name:"Паж Кубков",   desc:"Мечтательность, послание, нежность"},
-  {name:"Рыцарь Кубков", desc:"Романтика, предложение, идеализм"},
-  {name:"Королева Кубков", desc:"Интуиция, эмпатия, забота"},
-  {name:"Король Кубков", desc:"Мудрость, баланс, сострадание"},
-  {name:"Туз Мечей",    desc:"Ясность, истина, прорыв"},
-  {name:"Двойка Мечей", desc:"Тупик, избегание, решение"},
-  {name:"Тройка Мечей", desc:"Боль, предательство, разлука"},
-  {name:"Четвёрка Мечей", desc:"Отдых, восстановление, пауза"},
-  {name:"Пятёрка Мечей", desc:"Конфликт, поражение, тщеславие"},
-  {name:"Шестёрка Мечей", desc:"Переход, уход от бурь"},
-  {name:"Семёрка Мечей", desc:"Хитрость, уклонение, обман"},
-  {name:"Восьмёрка Мечей", desc:"Ловушка, ограничения, страх"},
-  {name:"Девятка Мечей", desc:"Тревога, кошмары, беспокойство"},
-  {name:"Десятка Мечей", desc:"Конец, кризис, точка дна"},
-  {name:"Паж Мечей",    desc:"Любопытство, наблюдение, идея"},
-  {name:"Рыцарь Мечей", desc:"Решительность, спор, натиск"},
-  {name:"Королева Мечей", desc:"Чёткость, независимость, честность"},
-  {name:"Король Мечей", desc:"Логика, авторитет, справедливость"},
-  {name:"Туз Пентаклей", desc:"Возможность, богатство, начало"},
-  {name:"Двойка Пентаклей", desc:"Баланс, гибкость, перемены"},
-  {name:"Тройка Пентаклей", desc:"Труд, команда, мастерство"},
-  {name:"Четвёрка Пентаклей", desc:"Скупость, контроль, стабильность"},
-  {name:"Пятёрка Пентаклей", desc:"Нужда, изоляция, трудности"},
-  {name:"Шестёрка Пентаклей", desc:"Щедрость, баланс, помощь"},
-  {name:"Семёрка Пентаклей", desc:"Терпение, оценка, ожидание"},
-  {name:"Восьмёрка Пентаклей", desc:"Усердие, обучение, развитие"},
-  {name:"Девятка Пентаклей", desc:"Достаток, независимость, успех"},
-  {name:"Десятка Пентаклей", desc:"Наследие, семья, процветание"},
-  {name:"Паж Пентаклей", desc:"Учёба, старание, новый план"},
-  {name:"Рыцарь Пентаклей", desc:"Методичность, надёжность, труд"},
-  {name:"Королева Пентаклей", desc:"Практичность, уют, достаток"},
-  {name:"Король Пентаклей", desc:"Богатство, щедрость, зрелость"},
+  {name:"Шут",             desc:"Новое начало, риск, свобода",              img:"cards/shut.jpg"},
+  {name:"Маг",             desc:"Сила воли, мастерство, действие",          img:"cards/mag.jpg"},
+  {name:"Верховная Жрица", desc:"Тайна, интуиция, внутренний голос",        img:"cards/zhrica.jpg"},
+  {name:"Императрица",     desc:"Плодородие, забота, изобилие",             img:"cards/empress.jpg"},
+  {name:"Император",       desc:"Власть, контроль, стабильность",           img:"cards/emperor.jpg"},
+  {name:"Иерофант",        desc:"Традиции, наставник, духовность",          img:"cards/hierofant.jpg"},
+  {name:"Влюблённые",      desc:"Выбор, союз, гармония",                    img:"cards/lovers.jpg"},
+  {name:"Колесница",       desc:"Победа, воля, движение вперёд",            img:"cards/chariot.jpg"},
+  {name:"Сила",            desc:"Терпение, смелость, внутренняя мощь",      img:"cards/strength.jpg"},
+  {name:"Отшельник",       desc:"Уединение, мудрость, поиск пути",          img:"cards/hermit.jpg"},
+  {name:"Колесо Фортуны",  desc:"Перемены, судьба, цикл жизни",            img:"cards/wheel.jpg"},
+  {name:"Справедливость",  desc:"Честность, баланс, карма",                 img:"cards/justice.jpg"},
+  {name:"Повешенный",      desc:"Пауза, жертва, новый взгляд",              img:"cards/hanged.jpg"},
+  {name:"Смерть",          desc:"Конец, трансформация, новый цикл",         img:"cards/death.jpg"},
+  {name:"Умеренность",     desc:"Баланс, терпение, гармония",               img:"cards/temperance.jpg"},
+  {name:"Дьявол",          desc:"Зависимость, страх, искушение",            img:"cards/devil.jpg"},
+  {name:"Башня",           desc:"Крах, внезапный перелом, хаос",            img:"cards/tower.jpg"},
+  {name:"Звезда",          desc:"Надежда, вдохновение, исцеление",          img:"cards/star.jpg"},
+  {name:"Луна",            desc:"Иллюзии, тревога, подсознание",            img:"cards/moon.jpg"},
+  {name:"Солнце",          desc:"Радость, успех, ясность",                  img:"cards/sun.jpg"},
+  {name:"Суд",             desc:"Пробуждение, призвание, итог",             img:"cards/judgment.jpg"},
+  {name:"Мир",             desc:"Завершение, целостность, триумф",          img:"cards/world.jpg"},
+  {name:"Туз Жезлов",      desc:"Вспышка идеи, творческий старт",          img:"cards/wands_ace.jpg"},
+  {name:"Двойка Жезлов",   desc:"Планирование, горизонты, выбор",          img:"cards/wands_2.jpg"},
+  {name:"Тройка Жезлов",   desc:"Расширение, ожидание, рост",              img:"cards/wands_3.jpg"},
+  {name:"Четвёрка Жезлов", desc:"Праздник, стабильность, дом",             img:"cards/wands_4.jpg"},
+  {name:"Пятёрка Жезлов",  desc:"Конкуренция, спор, соперничество",        img:"cards/wands_5.jpg"},
+  {name:"Шестёрка Жезлов", desc:"Победа, признание, успех",                img:"cards/wands_6.jpg"},
+  {name:"Семёрка Жезлов",  desc:"Защита позиций, упорство",                img:"cards/wands_7.jpg"},
+  {name:"Восьмёрка Жезлов",desc:"Скорость, новости, движение",             img:"cards/wands_8.jpg"},
+  {name:"Девятка Жезлов",  desc:"Стойкость, усталость, осторожность",      img:"cards/wands_9.jpg"},
+  {name:"Десятка Жезлов",  desc:"Бремя, усилие, ответственность",          img:"cards/wands_10.jpg"},
+  {name:"Паж Жезлов",      desc:"Энтузиазм, новость, приключение",         img:"cards/wands_page.jpg"},
+  {name:"Рыцарь Жезлов",   desc:"Страсть, импульс, риск",                  img:"cards/wands_knight.jpg"},
+  {name:"Королева Жезлов", desc:"Харизма, уверенность, творчество",        img:"cards/wands_queen.jpg"},
+  {name:"Король Жезлов",   desc:"Лидерство, видение, энергия",             img:"cards/wands_king.jpg"},
+  {name:"Туз Кубков",      desc:"Любовь, новые чувства, начало",           img:"cards/cups_ace.jpg"},
+  {name:"Двойка Кубков",   desc:"Партнёрство, притяжение, союз",           img:"cards/cups_2.jpg"},
+  {name:"Тройка Кубков",   desc:"Дружба, веселье, поддержка",              img:"cards/cups_3.jpg"},
+  {name:"Четвёрка Кубков", desc:"Скука, упущенное, апатия",                img:"cards/cups_4.jpg"},
+  {name:"Пятёрка Кубков",  desc:"Потеря, сожаление, горе",                 img:"cards/cups_5.jpg"},
+  {name:"Шестёрка Кубков", desc:"Ностальгия, детство, доброта",            img:"cards/cups_6.jpg"},
+  {name:"Семёрка Кубков",  desc:"Мечты, иллюзии, выбор",                   img:"cards/cups_7.jpg"},
+  {name:"Восьмёрка Кубков",desc:"Уход, разочарование, поиск",              img:"cards/cups_8.jpg"},
+  {name:"Девятка Кубков",  desc:"Желание исполнено, довольство",            img:"cards/cups_9.jpg"},
+  {name:"Десятка Кубков",  desc:"Счастье, семья, гармония",                img:"cards/cups_10.jpg"},
+  {name:"Паж Кубков",      desc:"Мечтательность, послание, нежность",      img:"cards/cups_page.jpg"},
+  {name:"Рыцарь Кубков",   desc:"Романтика, предложение, идеализм",        img:"cards/cups_knight.jpg"},
+  {name:"Королева Кубков", desc:"Интуиция, эмпатия, забота",               img:"cards/cups_queen.jpg"},
+  {name:"Король Кубков",   desc:"Мудрость, баланс, сострадание",           img:"cards/cups_king.jpg"},
+  {name:"Туз Мечей",       desc:"Ясность, истина, прорыв",                 img:"cards/swords_ace.jpg"},
+  {name:"Двойка Мечей",    desc:"Тупик, избегание, решение",               img:"cards/swords_2.jpg"},
+  {name:"Тройка Мечей",    desc:"Боль, предательство, разлука",            img:"cards/swords_3.jpg"},
+  {name:"Четвёрка Мечей",  desc:"Отдых, восстановление, пауза",            img:"cards/swords_4.jpg"},
+  {name:"Пятёрка Мечей",   desc:"Конфликт, поражение, тщеславие",          img:"cards/swords_5.jpg"},
+  {name:"Шестёрка Мечей",  desc:"Переход, уход от бурь",                   img:"cards/swords_6.jpg"},
+  {name:"Семёрка Мечей",   desc:"Хитрость, уклонение, обман",              img:"cards/swords_7.jpg"},
+  {name:"Восьмёрка Мечей", desc:"Ловушка, ограничения, страх",             img:"cards/swords_8.jpg"},
+  {name:"Девятка Мечей",   desc:"Тревога, кошмары, беспокойство",          img:"cards/swords_9.jpg"},
+  {name:"Десятка Мечей",   desc:"Конец, кризис, точка дна",                img:"cards/swords_10.jpg"},
+  {name:"Паж Мечей",       desc:"Любопытство, наблюдение, идея",           img:"cards/swords_page.jpg"},
+  {name:"Рыцарь Мечей",    desc:"Решительность, спор, натиск",             img:"cards/swords_knight.jpg"},
+  {name:"Королева Мечей",  desc:"Чёткость, независимость, честность",      img:"cards/swords_queen.jpg"},
+  {name:"Король Мечей",    desc:"Логика, авторитет, справедливость",       img:"cards/swords_king.jpg"},
+  {name:"Туз Пентаклей",   desc:"Возможность, богатство, начало",          img:"cards/pents_ace.jpg"},
+  {name:"Двойка Пентаклей",desc:"Баланс, гибкость, перемены",              img:"cards/pents_2.jpg"},
+  {name:"Тройка Пентаклей",desc:"Труд, команда, мастерство",               img:"cards/pents_3.jpg"},
+  {name:"Четвёрка Пентаклей",desc:"Скупость, контроль, стабильность",      img:"cards/pents_4.jpg"},
+  {name:"Пятёрка Пентаклей",desc:"Нужда, изоляция, трудности",             img:"cards/pents_5.jpg"},
+  {name:"Шестёрка Пентаклей",desc:"Щедрость, баланс, помощь",              img:"cards/pents_6.jpg"},
+  {name:"Семёрка Пентаклей",desc:"Терпение, оценка, ожидание",             img:"cards/pents_7.jpg"},
+  {name:"Восьмёрка Пентаклей",desc:"Усердие, обучение, развитие",          img:"cards/pents_8.jpg"},
+  {name:"Девятка Пентаклей",desc:"Достаток, независимость, успех",         img:"cards/pents_9.jpg"},
+  {name:"Десятка Пентаклей",desc:"Наследие, семья, процветание",           img:"cards/pents_10.jpg"},
+  {name:"Паж Пентаклей",   desc:"Учёба, старание, новый план",             img:"cards/pents_page.jpg"},
+  {name:"Рыцарь Пентаклей",desc:"Методичность, надёжность, труд",         img:"cards/pents_knight.jpg"},
+  {name:"Королева Пентаклей",desc:"Практичность, уют, достаток",           img:"cards/pents_queen.jpg"},
+  {name:"Король Пентаклей",desc:"Богатство, щедрость, зрелость",           img:"cards/pents_king.jpg"},
 ];
 
-const tg = window.Telegram.WebApp;
-tg.ready();
-tg.expand();
+// Инициализация Telegram WebApp
+const tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : {
+  ready: () => {},
+  expand: () => {},
+  sendData: (d) => console.log('sendData (dev):', d),
+  HapticFeedback: { impactOccurred: () => {}, notificationOccurred: () => {} },
+};
+try { tg.ready(); } catch(e) {}
+try { tg.expand(); } catch(e) {}
 
 const params = new URLSearchParams(window.location.search);
 const mode = params.get('mode') || 'reading';
 const maxCount = parseInt(params.get('count') || '3');
 
-// Обновляем заголовок под режим
 if (mode === 'daily') {
   document.getElementById('main-title').textContent = 'КАРТА ДНЯ';
   document.getElementById('sub-title').textContent = 'Выберите одну карту';
 }
 
-// Случайно выбираем 7 карт из колоды
+// Перемешиваем и берём 9 карт
 function getRandomCards(n) {
-  const shuffled = [...TAROT_CARDS].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, n);
+  const arr = [...TAROT_CARDS];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr.slice(0, n);
 }
 
 const displayCards = getRandomCards(9);
-// Для каждой карты заранее определяем, будет ли она перевёрнута при открытии
 const cardReversed = displayCards.map(() => Math.random() < 0.5);
-
 const selectedIndices = new Set();
+let autoSubmitTimer = null;
 
-// ===== Рендер счётчика =====
 function renderCountDots() {
-  const container = document.getElementById('count-indicator');
-  container.innerHTML = '';
+  const c = document.getElementById('count-indicator');
+  c.innerHTML = '';
   for (let i = 0; i < maxCount; i++) {
     const dot = document.createElement('div');
     dot.className = 'count-dot' + (i < selectedIndices.size ? ' filled' : '');
-    container.appendChild(dot);
+    c.appendChild(dot);
   }
-  const label = document.createTextNode(` Выбрано: ${selectedIndices.size}/${maxCount}`);
-  container.appendChild(label);
+  const lbl = document.createTextNode(` Выбрано: ${selectedIndices.size}/${maxCount}`);
+  c.appendChild(lbl);
 }
 
-// ===== Рендер карт =====
 function renderCards() {
   const grid = document.getElementById('cards-grid');
   grid.innerHTML = '';
-
   displayCards.forEach((card, index) => {
     const slot = document.createElement('div');
     slot.className = 'card-slot';
     slot.id = `card-${index}`;
+    slot.style.animationDelay = (index * 0.05) + 's';
     slot.onclick = () => toggleCard(index);
-
-    const isRev = cardReversed[index];
 
     slot.innerHTML = `
       <div class="card-inner">
         <div class="card-back">
           <div class="card-ornament">
             <span class="card-symbol">✦</span>
+            <span class="card-num">${String(index + 1).padStart(2, '0')}</span>
           </div>
         </div>
         <div class="card-front">
-          <div class="card-name">${card.name}</div>
-          <div class="card-desc">${card.desc}</div>
+          ${card.img
+            ? `<img class="card-img" src="${card.img}" alt="${card.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-front-text><div class=card-name>${card.name}</div><div class=card-desc>${card.desc}</div></div>'">
+               <div class="card-label"><div class="card-label-name">${card.name}</div></div>`
+            : `<div class="card-front-text"><div class="card-name">${card.name}</div><div class="card-desc">${card.desc}</div></div>`
+          }
         </div>
       </div>
     `;
-
-    // Убрали slot.classList.add('reversed') - все карты выглядят одинаково
     grid.appendChild(slot);
   });
 }
 
-// ===== Выбор карты =====
-let autoSubmitTimer = null;
-
 function toggleCard(index) {
-  // Если уже запущен таймер автоотправки - блокируем все нажатия
   if (autoSubmitTimer) return;
-
-  // Уже выбрана - нельзя снять обратно
   if (selectedIndices.has(index)) return;
-
-  // Лимит набран
   if (selectedIndices.size >= maxCount) {
-    tg.HapticFeedback && tg.HapticFeedback.notificationOccurred('error');
+    try { tg.HapticFeedback.notificationOccurred('error'); } catch(e) {}
     return;
   }
 
   selectedIndices.add(index);
-  const slot = document.getElementById(`card-${index}`);
-  slot.classList.add('selected', 'flipped');
-  tg.HapticFeedback && tg.HapticFeedback.impactOccurred('medium');
+  document.getElementById(`card-${index}`).classList.add('selected', 'flipped');
+  try { tg.HapticFeedback.impactOccurred('medium'); } catch(e) {}
 
   updateUI();
 
-  // Автоматическая отправка когда выбрано нужное количество
   if (selectedIndices.size === maxCount) {
-    autoSubmitTimer = setTimeout(() => {
-      confirmSelection();
-    }, 700);
+    autoSubmitTimer = setTimeout(confirmSelection, 750);
   }
 }
 
-// ===== Обновление UI =====
 function updateUI() {
   renderCountDots();
-  updateSelectedPreview();
-  updateConfirmButton();
-}
-
-function updateSelectedPreview() {
+  // Обновляем превью
   const preview = document.getElementById('selected-preview');
   preview.innerHTML = '';
   selectedIndices.forEach(i => {
-    const card = displayCards[i];
     const tag = document.createElement('div');
     tag.className = 'selected-tag';
-    tag.textContent = card.name;
+    tag.textContent = displayCards[i].name;
     preview.appendChild(tag);
   });
-}
-
-function updateConfirmButton() {
+  // Обновляем кнопку
   const btn = document.getElementById('confirm-btn');
-  const isReady = selectedIndices.size === maxCount;
-  if (isReady) {
-    // Карты выбраны - показываем что идёт отправка
+  const ready = selectedIndices.size === maxCount;
+  if (ready) {
     btn.className = 'active';
     btn.textContent = mode === 'daily' ? '✨ Открываю послание...' : '✨ Отправляю расклад...';
     btn.style.pointerEvents = 'none';
   } else {
     btn.className = 'inactive';
-    btn.style.pointerEvents = 'none'; // кнопка декоративная, вся логика в toggleCard
+    btn.style.pointerEvents = 'none';
     const left = maxCount - selectedIndices.size;
     btn.textContent = `Выберите ещё ${left} ${left === 1 ? 'карту' : left < 5 ? 'карты' : 'карт'}`;
   }
 }
 
-// ===== Подтверждение (вызывается автоматически из таймера) =====
 function confirmSelection() {
   if (selectedIndices.size !== maxCount) return;
 
+  const isInsideTelegram = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData;
+  if (!isInsideTelegram) {
+    showError('Открой через кнопку в боте, а не напрямую по ссылке');
+    return;
+  }
+
   document.getElementById('loading').classList.add('show');
-  tg.HapticFeedback && tg.HapticFeedback.notificationOccurred('success');
 
   const selected = [...selectedIndices].map(i => ({
     name: displayCards[i].name,
@@ -669,42 +690,41 @@ function confirmSelection() {
     display: displayCards[i].name + (cardReversed[i] ? ' (перевёрнута)' : ' (прямо)'),
   }));
 
-  const payload = JSON.stringify({
-    mode: mode,
-    cards: selected,
-  });
-
-  // Даём лоадеру показаться, потом отправляем
   setTimeout(() => {
-    tg.sendData(payload);
-  }, 600);
+    try {
+      tg.sendData(JSON.stringify({ mode, cards: selected }));
+    } catch(e) {
+      document.getElementById('loading').classList.remove('show');
+      showError('Ошибка отправки. Попробуй снова через бота.');
+    }
+  }, 500);
 }
 
-// ===== Генерация звёзд =====
+function showError(msg) {
+  document.getElementById('loading').classList.remove('show');
+  autoSubmitTimer = null;
+  const btn = document.getElementById('confirm-btn');
+  btn.className = 'inactive';
+  btn.style.pointerEvents = 'none';
+  btn.style.background = 'rgba(180,40,40,0.4)';
+  btn.style.color = '#fff';
+  btn.textContent = '❌ ' + msg;
+}
+
 function createStars() {
-  const count = 60;
-  for (let i = 0; i < count; i++) {
-    const star = document.createElement('div');
-    star.className = 'star';
-    const size = Math.random() * 2 + 1;
-    star.style.cssText = `
-      width: ${size}px;
-      height: ${size}px;
-      top: ${Math.random() * 100}%;
-      left: ${Math.random() * 100}%;
-      --dur: ${Math.random() * 3 + 2}s;
-      --op: ${Math.random() * 0.5 + 0.2};
-      animation-delay: ${Math.random() * 4}s;
-    `;
-    document.body.appendChild(star);
+  for (let i = 0; i < 55; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random() * 2 + 0.8;
+    s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${(Math.random()*3+2).toFixed(1)}s;--op:${(Math.random()*0.5+0.15).toFixed(2)};animation-delay:${(Math.random()*5).toFixed(1)}s`;
+    document.body.appendChild(s);
   }
 }
 
-// ===== Инициализация =====
 createStars();
 renderCards();
 renderCountDots();
-updateConfirmButton();
+updateUI();
 </script>
 </body>
 </html>
